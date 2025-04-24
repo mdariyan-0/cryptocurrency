@@ -90,7 +90,7 @@ createSlice({
 
 ## 🖼️ Preview
 
-(Insert your app screenshot here)
+![App Demo](./public/recording.gif)
 
 ---
 
