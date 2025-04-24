@@ -64,30 +64,6 @@ npm start
 
 ---
 
-## 🧾 Sample Redux Flow
-
-```js
-// store.js
-configureStore({
-  reducer: {
-    crypto: cryptoSlice,
-  },
-});
-
-// coinSlice.js
-createSlice({
-  name: 'crypto',
-  initialState: [],
-  reducers: {
-    fillData: (state, action) => {
-      // update logic
-    }
-  }
-});
-```
-
----
-
 ## 🖼️ Preview
 
 ![App Demo](./public/recording.gif)
