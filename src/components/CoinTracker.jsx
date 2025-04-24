@@ -50,7 +50,7 @@ const CoinTracker = () => {
               circulatingSupply:
                 data1.market_data.circulating_supply.toFixed(2),
               graphData: data2.prices.map((e, index)=>{
-                return {data : Math.ceil(e[1])}
+                return {data : e[1].toFixed(2)}
               }),
             };
           } catch (err) {
