@@ -31,6 +31,7 @@ const CoinTracker = () => {
 
             return {
               name: `${data1.name}  (${data1.symbol.toUpperCase()})`,
+              symbol: data1.symbol.toUpperCase(),
               currentPrice: data1.market_data.current_price.usd.toFixed(2),
               percentChange1h:
                 data1.market_data.price_change_percentage_1h_in_currency.usd.toFixed(
@@ -119,7 +120,7 @@ const CoinTracker = () => {
                   </td>
                   <td className="flicker">$ {getAmount(e.marketCap)}</td>
                   <td className="flicker">$ {getAmount(e.volume24h)}</td>
-                  <td className="flicker">{getAmount(e.circulatingSupply)}</td>
+                  <td className="flicker">{getAmount(e.circulatingSupply)+ e.symbol} </td>
                   <td className="graph">
                     {" "}
                     <AreaChart width={160} height={70} data={e.graphData}>
