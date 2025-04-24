@@ -73,19 +73,30 @@ npm start
 ## 📁 Folder Structure
 
 ```
-src/
-├── components/
-│   └── CoinCard.jsx
-├── redux/
-│   ├── store.js
-│   └── coinSlice.js
-├── utils/
-│   └── fetchCoins.js
-└── App.jsx
+cryptocurrency/
+├── .github/
+├── dist/
+├── node_modules/
+├── public/
+│   └── recording.gif       # Your preview/demo gif
+├── src/
+│   ├── assets/             # (Optional) Store icons/images if needed
+│   ├── components/
+│   │   └── CoinTracker.jsx
+│   ├── redux/
+│   │   ├── dataSlice.jsx   # Redux slice for crypto data
+│   │   └── store.jsx       # Redux store setup
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.jsx
+│   ├── index.css
+│   └── main.jsx
+├── .gitignore
+├── README.md
+├── package.json
+├── package-lock.json
+├── vite.config.js
+└── eslint.config.js
 ```
 
 ---
-
-## 🔒 License
-
-MIT © 2025 Ariyan & Workera
