@@ -27,3 +27,29 @@ body{
 .flick{
     color: black;
 }
+
+
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+  
+    thead tr {
+      display: none;
+    }
+  
+    tr {
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  
+    td {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+    }
+  
+  }
