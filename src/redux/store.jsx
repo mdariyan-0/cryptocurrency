@@ -1,10 +1,10 @@
 import {configureStore} from "@reduxjs/toolkit"
 import dataSlice from "./slices/dataSlice"
-import currencySlice from "./slices/currencySlice"
+import coinSlice from "./slices/coinSlice"
 const store = configureStore({
     reducer : {
         data: dataSlice,
-        currency: currencySlice
+        coin: coinSlice
     }
 })
 

@@ -1,20 +1,40 @@
-import {createSlice} from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const dataSlice = createSlice({
-    name : "data",
-    initialState : [],
-    reducers : {
-        fillData : (state, action)=>{
-            let newState = action.payload
-            
-            return newState
-        },
-        clearData : (state,action)=>{
-            state = []
-        }
-    }
-})
+  name: "data",
+  initialState: {},
+  reducers: {
+    fillData: (state, action) => {
+      return action.payload;
+    },
+    updateCoins: (state, action) => {
+      action.payload
+        .filter((e) => e.s.endsWith("USDT"))
+        .forEach((e) => {
+          state[e.s] = {
+            ...state[e.s],
 
-export const {fillData, clearData} = dataSlice.actions;
+            lastPrice: Number(e.c),
+
+            quoteVolume: Number(e.q),
+
+            priceChange: Number(e.c) - Number(e.o),
+
+            priceChangePercent:
+              ((Number(e.c) - Number(e.o)) / Number(e.o)) * 100,
+
+            highPrice: Number(e.h),
+
+            lowPrice: Number(e.l),
+          };
+        });
+    },
+    clearData: (state, action) => {
+      return {};
+    },
+  },
+});
+
+export const { fillData, updateCoins, clearData } = dataSlice.actions;
 
 export default dataSlice.reducer;

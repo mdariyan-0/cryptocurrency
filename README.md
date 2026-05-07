@@ -78,14 +78,14 @@ cryptocurrency/
 ├── dist/
 ├── node_modules/
 ├── public/
-│   └── recording.gif       # Your preview/demo gif
+│   └── recording.gif       
 ├── src/
-│   ├── assets/             # (Optional) Store icons/images if needed
+│   ├── assets/            
 │   ├── components/
 │   │   └── CoinTracker.jsx
 │   ├── redux/
-│   │   ├── dataSlice.jsx   # Redux slice for crypto data
-│   │   └── store.jsx       # Redux store setup
+│   │   ├── dataSlice.jsx 
+│   │   └── store.jsx   
 │   ├── App.jsx
 │   ├── App.css
 │   ├── index.jsx
