@@ -78,14 +78,24 @@ cryptocurrency/
 ├── dist/
 ├── node_modules/
 ├── public/
+<<<<<<< HEAD
 │   └── recording.gif       
 ├── src/
 │   ├── assets/            
+=======
+│   └── recording.gif      
+├── src/
+│   ├── assets/          
+>>>>>>> 11d413078b534852314b6ebfefbff898d0fff183
 │   ├── components/
 │   │   └── CoinTracker.jsx
 │   ├── redux/
 │   │   ├── dataSlice.jsx 
+<<<<<<< HEAD
 │   │   └── store.jsx   
+=======
+│   │   └── store.jsx      
+>>>>>>> 11d413078b534852314b6ebfefbff898d0fff183
 │   ├── App.jsx
 │   ├── App.css
 │   ├── index.jsx
