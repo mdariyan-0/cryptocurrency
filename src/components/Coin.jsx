@@ -66,7 +66,7 @@ const Coin = ({ symbol, index }) => {
         <th scope="row" className="w-[2%]">
           {index + 1}
         </th>
-        <td className="w-[10%]">{e.symbol}</td>
+        <td className="w-[10%]"><div className="font-bold text-lg">{e?.name}</div><div className="text-gray-500 text-sm">{e.symbol}</div></td>
         <td
           className={`w-[10%] ${flash === "green" ? "greenFlash" : flash === "red" ? "redFlash" : ""}`}
         >

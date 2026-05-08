@@ -3,12 +3,14 @@ import dataSlice from "./slices/dataSlice"
 import coinSlice from "./slices/coinSlice"
 import watchlistSlice from "./slices/watchlistSlice"
 import toastSlice from "./slices/toastSlice"
+import nameSlice from "./slices/nameSlice"
 const store = configureStore({
     reducer : {
         data: dataSlice,
         coin: coinSlice,
         watchlist: watchlistSlice,
-        toast: toastSlice
+        toast: toastSlice,
+        names: nameSlice,
     }
 })
 

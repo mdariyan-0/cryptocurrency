@@ -8,14 +8,15 @@ import Watchlist from "./home/Watchlist";
 import Leaderboard from "./home/Leaderboard";
 import Dashboard from "./home/Dashboard";
 import Toast from "./miscellaneous/Toast";
+import { setNames } from "../redux/slices/nameSlice";
 
 const CoinTracker = () => {
-  let [tempVar, setTempVar] = useState([]);
   const dispatch = useDispatch();
   const chartApi = "CG-jS1m5sFeRsmPbA2RRnjY2qmH";
   const dataState = useSelector((state) => state.data);
   const [activeTab, setActiveTab] = useState("Home");
-  
+  const options = { method: "GET", headers: { "x-cg-demo-api-key": chartApi } };
+  const names = useSelector((state) => state.names);
 
   const initialData = async () => {
     try {
@@ -29,10 +30,57 @@ const CoinTracker = () => {
       let jsonData = await response.json();
       let finalData = jsonData.filter((e) => e.symbol.endsWith("USDT"));
       dispatch(addCoin(finalData.map((e) => e.symbol)));
-      dispatch(fillData(arrToObj(finalData)));
+      let dataWithNames = nameAdder(arrToObj(finalData));
+      dispatch(fillData(dataWithNames));
     } catch (err) {
       console.log(err.message);
     }
+  };
+
+  const fetchNames = async () => {
+    try {
+      let [r1, r2, r3] = await Promise.all([
+        fetch(
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=250&page=1`,
+          options,
+        ),
+        fetch(
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=250&page=2`,
+          options,
+        ),
+        fetch(
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=250&page=3`,
+          options,
+        ),
+      ]);
+      let [d1, d2, d3] = await Promise.all([r1.json(), r2.json(), r3.json()]);
+      let allNames = [...d1, ...d2, ...d3];
+      dispatch(setNames(allNames));
+    } catch (error) {
+      console.error("Error fetching names:", error);
+    }
+  };
+
+  const nameAdder = (obj) => {
+    let newObj = { ...obj };
+    let coins = Object.keys(obj);
+
+    let nameMap = {};
+    names.forEach((e) => {
+      nameMap[e.symbol.toLowerCase()] = e.name;
+    });
+
+    coins.forEach((coin) => {
+      let abbv = coin.replace("USDT", "").toLowerCase();
+
+      newObj[coin] = {
+        ...newObj[coin],
+        name: nameMap[abbv] || abbv.toUpperCase(),
+      };
+    });
+    console.log(names);
+
+    return newObj;
   };
 
   const bufferRef = useRef({});
@@ -46,8 +94,11 @@ const CoinTracker = () => {
   };
 
   useEffect(() => {
-    initialData();
+    fetchNames();
   }, []);
+  useEffect(() => {
+    initialData();
+  }, [names]);
 
   useEffect(() => {
     const ws = new WebSocket(
@@ -103,9 +154,8 @@ const CoinTracker = () => {
           {["Home", "Watchlist", "LeaderBoard"].map((tab) => (
             <button
               key={tab}
-              onClick={() =>{ 
-                
-                setActiveTab(tab)
+              onClick={() => {
+                setActiveTab(tab);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               className={`px-4 py-2.5 bg-transparent cursor-pointer text-base transition-all duration-300 ${
@@ -121,11 +171,11 @@ const CoinTracker = () => {
 
         {activeTab === "Home" && <Dashboard />}
 
-        {activeTab === "Watchlist" && <Watchlist/>}
+        {activeTab === "Watchlist" && <Watchlist />}
 
-        {activeTab === "LeaderBoard" && <Leaderboard/>}
+        {activeTab === "LeaderBoard" && <Leaderboard />}
       </div>
-      <Toast/>
+      <Toast />
     </div>
   );
 };
