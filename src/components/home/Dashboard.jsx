@@ -32,9 +32,11 @@ const Dashboard = () => {
               })
             : Array.from({ length: 15 }).map((_, index) => (
                 <tr key={index} className="text-right table-row">
+                  {Array.from({ length: 2 }).map((_, i) => (
                   <th scope="row" className="w-[2%]">
                     <div className="h-5 bg-[#333] rounded my-2.5 animate-pulse"></div>
                   </th>
+                  ))}
                   {Array.from({ length: 7 }).map((_, i) => (
                     <td key={i} className="w-[10%]">
                       <div className="h-5 bg-[#333] rounded my-2.5 animate-pulse"></div>
