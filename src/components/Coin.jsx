@@ -1,127 +1,134 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Star } from "lucide-react";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToWatchlist,
+  removeFromWatchlist,
+} from "../redux/slices/watchlistSlice";
+import Toast from "./miscellaneous/Toast";
+import { displayToast } from "../redux/slices/toastSlice";
 
 const Coin = ({ symbol, index }) => {
   let e = useSelector((state) => state.data[symbol]);
+  let watchlist = useSelector((state) => state.watchlist);
+  let dispatch = useDispatch();
   if (!e) return null;
   let priceRef = React.useRef(null);
   const getAmount = (amount) => {
-    return Number(amount)
-    .toLocaleString("en-US", {
+    return Number(amount).toLocaleString("en-US", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     });
   };
   const [flash, setFlash] = React.useState("");
+  const isWatchlisted = watchlist.includes(symbol);
+
+  const handleWatchlistToggle = (event) => {
+    event.stopPropagation();
+    if (isWatchlisted) {
+      dispatch(removeFromWatchlist(symbol));
+      dispatch(displayToast(`${symbol} removed from watchlist`));
+    } else {
+      dispatch(addToWatchlist(symbol));
+      dispatch(displayToast(`${symbol} added to watchlist`));
+    }
+  };
+
   useEffect(() => {
     if (priceRef.current !== null) {
       if (Number(e.lastPrice) > Number(priceRef.current)) {
         setFlash("");
-
-setTimeout(() => {
-  setFlash("green");
-}, 0);
+        setTimeout(() => {
+          setFlash("green");
+        }, 0);
       } else if (Number(e.lastPrice) < Number(priceRef.current)) {
         setFlash("");
 
-setTimeout(() => {
-  setFlash("red");
-}, 0);
+        setTimeout(() => {
+          setFlash("red");
+        }, 0);
       }
     }
 
     priceRef.current = e.lastPrice;
   }, [e.lastPrice]);
   return (
-    <tr
-      
-      style={{ textAlign: "right", display: "table-row" }}
-      key={symbol}
-    >
-      <th scope="row" style={{ width: "2%" }}>
-        {index + 1}
-      </th>
-      <td style={{ width: "10%" }}>{e.symbol}</td>
-      <td className={
-        flash === "green" ? "greenFlash" : flash === "red" ? "redFlash" : ""
-      } style={{ width: "10%" }}>
-        $ {getAmount(e.lastPrice) + "."}
-        <span style={{ color: "gray", fontSize: "14px" }}>
-          {String(Number(e.lastPrice).toFixed(2)).split(".")[1]}
-        </span>
-      </td>
-      <td
-        style={{ width: "10%" }}
-        className={
-          e.priceChange > 0 ? "green" : e.priceChange < 0 ? "red" : "white"
-        }
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            gap: "5px",
-          }}
+    <>
+      <tr className="text-right table-row select-none" key={symbol}>
+        <th
+          scope="row"
+          className={`w-[2%] ${isWatchlisted ? "text-yellow-400" : "text-gray-500"} cursor-pointer`}
         >
-          {" "}
-          {e.priceChange < 0 ? (
-            <ChevronDown />
-          ) : e.priceChange > 0 ? (
-            <ChevronUp />
-          ) : null}
-          {` ${String(Number(e.priceChange).toFixed(2)).replace("-", "")}`}
-        </div>
-      </td>
-      <td
-        className={
-          e.priceChangePercent > 0
-            ? "green"
-            : e.priceChangePercent < 0
-              ? "red"
-              : "white"
-        }
-        style={{
-          width: "10%",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            gap: "5px",
-          }}
+          <div title={isWatchlisted ? "Remove from Watchlist" : "Add to Watchlist"} onClick={handleWatchlistToggle}>
+            <Star />
+          </div>
+        </th>
+        <th scope="row" className="w-[2%]">
+          {index + 1}
+        </th>
+        <td className="w-[10%]">{e.symbol}</td>
+        <td
+          className={`w-[10%] ${flash === "green" ? "greenFlash" : flash === "red" ? "redFlash" : ""}`}
         >
-          {e.priceChangePercent < 0 ? (
-            <ChevronDown />
-          ) : e.priceChangePercent > 0 ? (
-            <ChevronUp />
-          ) : null}{" "}
-          {` ${Number(String(e.priceChangePercent).replace("-", "")).toFixed(2)}`}
-          {" %"}
-        </div>
-      </td>
-      <td style={{ width: "10%" }}>
-        $ {getAmount(e.quoteVolume) + "."}
-        <span style={{ color: "gray", fontSize: "14px" }}>
-          {String(Number(e.quoteVolume).toFixed(2)).split(".")[1]}
-        </span>
-      </td>
-      <td style={{ width: "10%" }}>
-        ${getAmount(e.highPrice) + "."}
-        <span style={{ color: "gray", fontSize: "14px" }}>
-          {String(Number(e.highPrice).toFixed(2)).split(".")[1]}
-        </span>
-      </td>
-      <td style={{ width: "10%" }}>
-        ${getAmount(e.lowPrice) + "."}
-        <span style={{ color: "gray", fontSize: "14px" }}>
-          {String(Number(e.lowPrice).toFixed(2)).split(".")[1]}
-        </span>{" "}
-      </td>
-    </tr>
+          $ {getAmount(e.lastPrice) + "."}
+          <span className="text-gray-500 text-sm">
+            {String(Number(e.lastPrice).toFixed(2)).split(".")[1]}
+          </span>
+        </td>
+        <td
+          className={`w-[10%] ${
+            e.priceChange > 0 ? "green" : e.priceChange < 0 ? "red" : "white"
+          }`}
+        >
+          <div className="flex items-center justify-end gap-[5px]">
+            {" "}
+            {e.priceChange < 0 ? (
+              <ChevronDown />
+            ) : e.priceChange > 0 ? (
+              <ChevronUp />
+            ) : null}
+            {` ${String(Number(e.priceChange).toFixed(2)).replace("-", "")}`}
+          </div>
+        </td>
+        <td
+          className={`w-[10%] ${
+            e.priceChangePercent > 0
+              ? "green"
+              : e.priceChangePercent < 0
+                ? "red"
+                : "white"
+          }`}
+        >
+          <div className="flex items-center justify-end gap-[5px]">
+            {e.priceChangePercent < 0 ? (
+              <ChevronDown />
+            ) : e.priceChangePercent > 0 ? (
+              <ChevronUp />
+            ) : null}{" "}
+            {` ${Number(String(e.priceChangePercent).replace("-", "")).toFixed(2)}`}
+            {" %"}
+          </div>
+        </td>
+        <td className="w-[10%]">
+          $ {getAmount(e.quoteVolume) + "."}
+          <span className="text-gray-500 text-sm">
+            {String(Number(e.quoteVolume).toFixed(2)).split(".")[1]}
+          </span>
+        </td>
+        <td className="w-[10%]">
+          ${getAmount(e.highPrice) + "."}
+          <span className="text-gray-500 text-sm">
+            {String(Number(e.highPrice).toFixed(2)).split(".")[1]}
+          </span>
+        </td>
+        <td className="w-[10%]">
+          ${getAmount(e.lowPrice) + "."}
+          <span className="text-gray-500 text-sm">
+            {String(Number(e.lowPrice).toFixed(2)).split(".")[1]}
+          </span>{" "}
+        </td>
+      </tr>
+    </>
   );
 };
 

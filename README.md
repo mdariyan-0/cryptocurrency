@@ -1,112 +1,52 @@
-# 🪙 Crypto Tracker App
+# Cryptocurrency Dashboard & Tracker
 
-A real-time cryptocurrency tracker built with **React.js**, **Redux**, and **Recharts**, featuring:
+A modern, interactive React web application designed to track cryptocurrency prices, market volumes, and percentage changes. It features a fully functional watchlist, dynamic sorting, and real-time price animation indicators.
 
-- 📊 1h / 24h / 7d price change tracking  
-- 💰 Market cap, volume, and circulating supply  
-- 📈 7-day mini line chart using Recharts  
-- 🔁 Auto-refresh every 14 seconds  
-- 🌐 Fully dynamic data from CoinGecko API
+## Features
 
----
+- **Real-time Price Indicators:** Table cells flash green or red to instantly indicate when a coin's price has increased or decreased.
+- **Interactive Watchlist:** Easily add or remove your favorite cryptocurrencies to a dedicated watchlist using global state.
+- **Advanced Data Tables:** Built with TanStack Table to support robust pagination and multi-column sorting.
+- **Global Notifications:** Integrated toast notifications to alert users when a coin is added or removed from the watchlist.
+- **Responsive UI:** Styled entirely with Tailwind CSS for a sleek, dark-mode financial dashboard aesthetic.
 
-## 🚀 Features
+## Tech Stack
 
-- ⏱️ Auto-fetch data every 14 seconds  
-- 📥 CoinGecko API used for:
-  - Current price
-  - Price change percentages (1h, 24h, 7d)
-  - Market cap, 24h volume, circulating supply
-  - Sparkline (7-day historical prices)
-- 📦 Redux for global state management  
-- 📈 Sparkline charts rendered with **Recharts**
+- **Framework:** React
+- **State Management:** Redux Toolkit (Slices for Data, Watchlist, and Toasts)
+- **Data Grid:** @tanstack/react-table (v8)
+- **Styling:** Tailwind CSS
+- **Icons:** Lucide React
 
----
+## Installation and Setup
 
-## 📦 Tech Stack
-
-- **Frontend:** React.js  
-- **State Management:** Redux + Redux Toolkit  
-- **Charts:** Recharts  
-- **API:** CoinGecko REST API
-
----
-
-## 🧰 Installation
+1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/crypto-tracker.git
-cd crypto-tracker
+git clone <your-repository-url>
+cd cryptocurrency
+```
+
+2. Install the required dependencies:
+
+```bash
 npm install
+```
+
+3. Start the development server:
+
+```bash
 npm start
 ```
 
----
+4. Open your browser and navigate to `http://localhost:3000`.
 
-## 🧪 Usage
+## Project Structure
 
-1. Add crypto coins to the `currencies` array (e.g., `['bitcoin', 'ethereum', 'solana']`)
-2. App fetches details for each coin using:
-   - `/coins/{id}` for market data
-   - `/coins/{id}/market_chart` for 7-day price history
-3. Redux stores and updates the global state every 14 seconds
-4. Charts update automatically using Recharts
+- `src/components/` - Contains all reusable UI components (Coin, Toast, etc.).
+- `src/components/home/` - Contains the main dashboard views (Dashboard, Watchlist, Leaderboard).
+- `src/redux/` - Contains Redux store configuration and state slices.
 
----
+## License
 
-## 🧠 Developer Notes
-
-- All CoinGecko calls are made from the **frontend**, so no backend needed  
-- Includes CORS handling (works without proxy)  
-- Uses `Promise.all()` to fetch both main data and chart data for each coin  
-- Cleaned and normalized data is dispatched to Redux via `fillData()`  
-- React `useRef` and `useEffect` used for optional performance tweaks  
-
----
-
-## 🖼️ Preview
-
-![App Demo](./public/recording.gif)
-
----
-
-## 📁 Folder Structure
-
-```
-cryptocurrency/
-├── .github/
-├── dist/
-├── node_modules/
-├── public/
-<<<<<<< HEAD
-│   └── recording.gif       
-├── src/
-│   ├── assets/            
-=======
-│   └── recording.gif      
-├── src/
-│   ├── assets/          
->>>>>>> 11d413078b534852314b6ebfefbff898d0fff183
-│   ├── components/
-│   │   └── CoinTracker.jsx
-│   ├── redux/
-│   │   ├── dataSlice.jsx 
-<<<<<<< HEAD
-│   │   └── store.jsx   
-=======
-│   │   └── store.jsx      
->>>>>>> 11d413078b534852314b6ebfefbff898d0fff183
-│   ├── App.jsx
-│   ├── App.css
-│   ├── index.jsx
-│   ├── index.css
-│   └── main.jsx
-├── .gitignore
-├── README.md
-├── package.json
-├── package-lock.json
-├── vite.config.js
-└── eslint.config.js
-```
-
----
+This project is licensed under the MIT License.
