@@ -9,6 +9,8 @@ import Leaderboard from "./home/Leaderboard";
 import Dashboard from "./home/Dashboard";
 import Toast from "./miscellaneous/Toast";
 import { setNames } from "../redux/slices/nameSlice";
+import useDebounce from "../hooks/useDebounce";
+import { setSearchList } from "../redux/slices/searchSlice";
 
 const CoinTracker = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,8 @@ const CoinTracker = () => {
   const [activeTab, setActiveTab] = useState("Home");
   const options = { method: "GET", headers: { "x-cg-demo-api-key": chartApi } };
   const names = useSelector((state) => state.names);
+  const [term , setTerm] = useState("");
+  let debouncedSearchTerm = useDebounce(term, 500);
 
   const initialData = async () => {
     try {
@@ -78,7 +82,6 @@ const CoinTracker = () => {
         name: nameMap[abbv] || abbv.toUpperCase(),
       };
     });
-    console.log(names);
 
     return newObj;
   };
@@ -92,6 +95,20 @@ const CoinTracker = () => {
     });
     return obj;
   };
+
+  const searchCoins = (searchTerm) => {
+    let coindata = Object.values(dataState);
+    let searchResults = coindata.filter(coin => coin.symbol.toLowerCase().includes(searchTerm.toLowerCase()) || coin.name.toLowerCase().includes(searchTerm.toLowerCase())).map(e => e.symbol);
+    dispatch(setSearchList(searchResults));
+  }
+
+  useEffect(()=>{
+    if(debouncedSearchTerm){
+      searchCoins(debouncedSearchTerm)
+    }else{
+      dispatch(setSearchList([]));
+    }
+  }, [debouncedSearchTerm])
 
   useEffect(() => {
     fetchNames();
@@ -167,6 +184,8 @@ const CoinTracker = () => {
               {tab}
             </button>
           ))}
+         {activeTab === "Home" && <div className="w-full self-center justify-end flex"><input type="text" className="rounded py-1 px-2 bg-black border border-gray-500 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#8884d8]" placeholder="Search coins..." value={term} onChange={(e)=> setTerm(e.target.value)} /></div>}
+         
         </div>
 
         {activeTab === "Home" && <Dashboard />}

@@ -4,6 +4,7 @@ import coinSlice from "./slices/coinSlice"
 import watchlistSlice from "./slices/watchlistSlice"
 import toastSlice from "./slices/toastSlice"
 import nameSlice from "./slices/nameSlice"
+import searchSlice from "./slices/searchSlice"
 const store = configureStore({
     reducer : {
         data: dataSlice,
@@ -11,6 +12,7 @@ const store = configureStore({
         watchlist: watchlistSlice,
         toast: toastSlice,
         names: nameSlice,
+        searchList: searchSlice
     }
 })
 

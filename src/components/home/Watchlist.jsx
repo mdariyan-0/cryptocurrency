@@ -56,8 +56,13 @@ const Watchlist = () => {
         enableSorting: false,
       },
       {
-        accessorKey: "symbol",
+        accessorKey: "name",
         header: "Coin",
+        cell : (info) => (
+          <div className="font-bold text-xl">
+            {info.getValue()}
+          </div>
+        ),
       },
 
       {
@@ -129,6 +134,7 @@ const Watchlist = () => {
       {
         accessorKey: "quoteVolume",
         header: "Volume(24h)",
+        size: 180,
         cell: (info) => {
           let price = Number(info.getValue()).toLocaleString("en-US", {
             minimumFractionDigits: 0,
@@ -138,10 +144,10 @@ const Watchlist = () => {
           let decimalPart =
             String(Number(value.toFixed(2))).split(".")[1] || "00";
           return (
-            <span>
+            <div className="tabular-nums">
               $ {price}.
               <span className="text-gray-500 text-sm">{decimalPart}</span>
-            </span>
+            </div>
           );
         },
       },
@@ -162,6 +168,7 @@ const Watchlist = () => {
       sorting,
       pagination,
     },
+    autoResetPageIndex: false,
 
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
@@ -171,10 +178,6 @@ const Watchlist = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-
-  useEffect(() => {
-    console.log(tableData);
-  }, [watchlist]);
 
   if (watchlist.length === 0) {
     return (
@@ -194,11 +197,18 @@ const Watchlist = () => {
         Your <span className="text-[#8884d8] font-semibold">Watchlist</span>
       </h2>
       <table>
-        <thead className="bg-[#222] text-white sticky top-[42px] z-10">
+        <thead className="text-sm text-gray-500 uppercase border-b border-gray-700 bg-black sticky top-[45px] z-10">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id}>
+                <th
+                  key={header.id}
+                  style={
+                    header.column.getSize() !== 150
+                      ? { width: header.getSize(), minWidth: header.getSize() }
+                      : undefined
+                  }
+                >
                   {header.isPlaceholder ? null : (
                     <div
                       className={
@@ -227,7 +237,17 @@ const Watchlist = () => {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
+                <td
+                  key={cell.id}
+                  style={
+                    cell.column.getSize() !== 150
+                      ? {
+                          width: cell.column.getSize(),
+                          minWidth: cell.column.getSize(),
+                        }
+                      : undefined
+                  }
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
